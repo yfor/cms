@@ -1,0 +1,78 @@
+<style type="text/css">
+    .pdtfix{
+        position: fixed;
+        z-index: 100;
+        width: 100%;
+        background-color:#423e3f;
+        height:40px;
+        text-align:center;
+        color:white
+    }
+    .editpruduct{
+        position: absolute;
+        top: 5%;
+        right: 0;
+        /*z-index: 101;*/
+        margin: 5px 10px 0 0;
+    }
+</style>
+
+<div class = "am-animation-fade">
+
+
+    <!-- <div class="am-g proLi-volume"><span class="am-icon-volume-up"></span>请在19:43内提交订单，时间结束后商品可能被抢完。</div> -->
+    
+    <div>
+        <!-- <div ng-if = "true" class="am-g proLi-list"> -->
+        <div ng-if = "users.owner_id" class="am-g proLi-list">
+            <div  class = "pdtfix" >
+                <h1 class="am-serif">购物车</h1>
+            </div>
+            <ul>
+                <li style = "background-color:#fbfbfb" class="am-u-sm-12" ng-repeat = "p in pdtList track by $index" am-counts production = "p">
+                    <div ng-if="!p.productEdit" style = "text-align: right;margin-right: 5%;" ng-click = "p.edit(0)">编辑</div>
+                    <div ng-if="p.productEdit" style = "text-align: right;margin-right: 5%;" ng-click = "p.edit(1)">完成</div>
+                    <div class="proLi-selectGoods" ng-click = "p.changStatus();getAllPrice()">
+                        <input type="checkbox" ng-checked = "p.status == 'done'" />
+                    </div>
+                    <div class="proLi-goodsImg"><img ng-src="{{serviceAddress+p.product.pictures['方正'][0].url}}" class="am-img-responsive" alt="图片"/></div>
+                    <div class="proLi-goodsDetails">
+                        <div class="proLi-details">{{p.product.detail}}{{p.product.name}}</div>
+                        <div class="proLi-value">
+                            <div class="proLi-goodsValue">￥{{p.product.real_price}}</div>
+                            <div class="am-btn-group am-btn-group-xs proLi-goodsNum">
+                                <span>数量</span>
+                                <span ng-if = "p.productEdit" ng-click = "p.reduce();getAllPrice()">-</span>
+                                <span>{{p.amount}}</span>
+                                <span ng-if = "p.productEdit" ng-click = "p.increase();getAllPrice()">+</span>
+                                <span ng-if = "p.productEdit" class = "am-icon-trash-o" ng-click = "deleteProductNumber(p.id)"></span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li ng-if ="!pdtList.length" class = "proLi-empty">
+                    <div class="am-text-center"><span class="am-icon-cart-plus am-icon-lg"></span></div>
+                    <div class="am-text-center">您的购物车空空如也</div>
+                    <div class="am-text-center proLi-text14">快去挑点宝贝吧</div>
+                    <div class="am-text-center"><button class="am-btn">去逛逛</button></div>
+                </li>
+            </ul>
+        </div>
+        <div class="am-text-center proLi-noEnter" ng-if = "!users.owner_id">
+            <div>您还未登录，请先登录</div>
+            <button class="am-btn" ng-click = "gotoLogon()">点击登录</button>
+        </div>
+        <div ng-if = "users.owner_id" class="am-topbar am-topbar-fixed-bottom" style="margin-bottom:40px;">
+            <div class = "am-g">
+                <div class="am-u-sm-6 am-vertical-align" style= "height:50px">
+                    <span class="am-vertical-align-middle">总计 ￥{{allPrice || 0}}</span>
+                </div>
+                <div class="am-u-sm-6 ">
+                    <button class="am-btn proLi-toBuyBtn am-fr" style = "z-index:1100" ng-click = "changedPage2payment()">去结算</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

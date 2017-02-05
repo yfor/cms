@@ -1,0 +1,91 @@
+<div class = "">
+	<div class = "am-topbar am-topbar-fixed-top"  style = "background-color:#423e3f;;bottom:40" >
+	    <span class = "am-icon-angle-left am-icon-lg am-fl" style = "margin:2px 0 2px 5px;" ng-click = "historyBack()"></span>
+	</div>
+	<div class = "am-animation-slide-right" style="margin-top:50px;">
+		<div>
+		<!--图片轮播-->
+		<div am-swiper-plug options = "slideFruitData" type = "typeName"> </div>
+		<!--名称及价钱详细介绍-->
+		<div class="am-u-sm-12 det-details">
+			<div class="am-u-sm-10">{{productDetails.description}} {{productDetails.detail}}</div>
+			<div class="am-u-sm-2 am-text-center det-collect">
+				<span class="am-icon-heart-o am-icon-md"></span> <br/>收藏
+			</div>
+			<div class="am-u-sm-12 det-value"> ¥{{productDetails.real_price}} 
+				<span class="det-lastValue"> ¥{{productDetails.price}}</span>
+				<span>{{productDetails.name}} </span>
+			</div>
+		</div>
+		<!--提示-->
+		<div class="am-u-sm-12 det-sign">
+			<p>*原产地直邮，下单时请提供真实姓名和身份证号。</p>
+			<p>*本产品由品牌商提供发货服务</p>
+		</div>
+
+		<!--熊笨熊生活常识介绍-->
+		<div class="am-u-sm-12 det-introduce">
+			<div class="am-u-sm-3">
+				<img src="lib/images/LOGO.png" class="am-img-responsive" alt=""/>
+			</div>
+			<div class="am-u-sm-9">
+				水果是指多汁且大多数有甜味可直接生吃的植物果实，不但含有丰富的营养且能够帮助消化。
+			</div>
+		</div>
+		<div class="am-cf"></div>
+
+		<!--商品简介-->
+		<div class="am-u-sm-12 det-productIntro">
+			【名称】{{productDetails.name}} <br/>
+			【产地】 中国 <br/>
+			【详情】 {{productDetails.detail}}  <br/>
+			【价格】¥{{productDetails.price}} <br/>
+			【优惠价格】¥{{productDetails.real_price}} <br/>
+			【类型】 {{cagetory}} <br/>
+			<!-- 【状态】 促销 -->
+		</div>
+
+		<!--商品详情-->
+		<div>
+			<div class="am-u-sm-8 am-vertical-align" style= "height:46px;background-color:#aaaaaa;text-align:center">
+				<span class="am-vertical-align-middle" >商品详情</span>
+			</div>
+			<div class="am-u-sm-4 am-vertical-align" style= "height:46px;background-color:#B6DCC1;text-align:center">
+	            <span class="am-vertical-align-middle" >商品秀</span>
+	        </div>
+        </div>
+
+		<div class="am-u-sm-12 det-productIntro">
+			
+			<ul>
+				<!-- <li class = "am-u-sm-12" ng-repeat = "img in productDetails.pictures track by $index">
+				<img ng-src="{{serviceAddress+img.url}}" class="am-img-responsive"></li> -->
+
+				<li ng-if = "productDetails.pictures['详情'].length" class="am-u-sm-12 am-u-md-12 am-u-lg-12" ng-repeat="img in productDetails.pictures['详情'] track by $index">
+                    <a><img ng-src="{{serviceAddress+img.url}}" alt="" class="am-img-responsive"/></a>
+                </li>
+			</ul>
+		</div>
+		<!--热卖推荐-->
+	</div>
+
+	</div>
+ 	<div class="am-topbar am-topbar-fixed-bottom" style="margin-bottom:0px;z-index: 100000000;">
+        <div class = "am-g">
+            <div class="am-u-sm-6 am-vertical-align" style="height:50px;color:#aaaaaa;text-align:center" ng-click = "gotoShopList()">
+                <span class="am-vertical-align-middle"><i class="am-icon-cart-plus am-icon-md"></i></span>
+                <span ng-if = "shopListNum.num" class="menuGoodsNumSec" style = "color:white">{{shopListNum.num}}</span>
+            </div>
+            <!-- <div class="am-u-sm-3 am-vertical-align" style= "height:50px;color:#aaaaaa;text-align:center">
+            	<span class="am-vertical-align-middle"><i class="am-icon-comments am-icon-md"></i></span>
+            </div>
+ -->            <div class="am-u-sm-6 am-vertical-align" style= "height:50px;background-color:#444444;color:white;text-align:center">
+                <span class="am-vertical-align-middle" ng-click = "addToBag()">加入购物车</span>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div am-modal-plug options = "modalObj"></div>
+    <div am-modal-plug options = "modalObjSuc"></div>
+    <div am-modal-plug options = "modalObjErr"></div>
+</div>
