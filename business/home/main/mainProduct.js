@@ -1,74 +1,148 @@
-define(["amaze","framework/services/homeService"],function (amaze,homePage){
+define(["amaze","framework/services/productService","uploadPreview"],function (amaze,productService,uploadPreview){
 	var ctrl = ["$scope","$state","$stateParams","$http","$q",function($scope,$state, $stateParams,$http,$q){
-				
-		var account_id=getCookie("account_id");
-		if(!account_id){
-			$state.go("login");
-		}
-		function getCookie(key) {
-			var coo=unescape(document.cookie);
-			var arr1=coo.split('; ');
-			for (var i=0;i<arr1.length;i++){
-					var arr2=arr1[i].split('=');
-					if(arr2[0]==key){
-							 return arr2[1];
-					}
-			}
-		}
+	$scope.productCategories=[
+	{
+		name:"单品精选",
+		id:1
+	},
+		{
+		name:"个人套餐",
+		id:2
+	},	{
+		name:"企业套餐",
+		id:3
+	},	{
+		name:"周边",
+		id:4
+	}
+	]
+	$scope.units=[
+	{
+		name:"斤",
+		id:0
+	},
+		{
+		name:"份",
+		id:1
+	},	{
+		name:"个",
+		id:2
+	}
+	]
+	$scope.product={
+		name:"繁花·混合鲜花月套餐",
+		description:"一周一花，每月4次，精选3-5种当季花材，品种随机",
+		price:159,
+		real_price:172,
+		stock:1000,
+		category_id:1,
+		unit:"斤"
 		
-		var $fullText = $('.admin-fullText');
-		$('#admin-fullscreen').on('click', function() {
-		  $.AMUI.fullscreen.toggle();
-		});
+	};
 
-		$(document).on($.AMUI.fullscreen.raw.fullscreenchange, function() {
-		  $fullText.text($.AMUI.fullscreen.isFullscreen ? '退出全屏' : '开启全屏');
-		})
-		var homePageIns = new homePage($q);
-		// console.log(pdt);
-		// $scope.currentMenu = 0;
-		// $scope.menuChangedTwo = false;
-		$scope.slideFruitData =  [];
-		$scope.productListDisplay = undefined;
-		// $scope.slideFruitDataHor = ["lib/images/boluo_03.png","lib/images/img5.png","lib/images/lemon_12.png","lib/images/sangshen_06.png","lib/images/shejiaguo_08.png",]
-		$scope.switchMenuContent = function(){
-			init();
+	var account_id=getCookie("account_id");
+	if(!account_id){
+		$state.go("login");
+	}
+	function getCookie(key) {
+		var coo=unescape(document.cookie);
+		var arr1=coo.split('; ');
+		for (var i=0;i<arr1.length;i++){
+				var arr2=arr1[i].split('=');
+				if(arr2[0]==key){
+						 return arr2[1];
+				}
 		}
-		$scope.gotoProductDetail = function(statusNum){
-			$scope.stateGoto(statusNum);
-			// $state.go("detail",{productId:statusNum})
-		}
-		$scope.gotoChristmas = function(){
-			$state.go("merrychristmas");
-		}
-		$scope.goSearch = function(){
-			$state.go("search");
-		}
-
-		$scope.goCollect = function(){
-			$state.go("collect");
-		}
+	}
 		
-		$('#doc-form-file').on('change', function() {
-		  var fileNames = '';
-		  $.each(this.files, function() {
-			fileNames += '<span class="am-badge">' + this.name + '</span> ';
-		  });
-		  $('#file-list').html(fileNames);
-		});
+	var $fullText = $('.admin-fullText');
+	$('#admin-fullscreen').on('click', function() {
+	  $.AMUI.fullscreen.toggle();
+	});
+
+	$(document).on($.AMUI.fullscreen.raw.fullscreenchange, function() {
+	  $fullText.text($.AMUI.fullscreen.isFullscreen ? '退出全屏' : '开启全屏');
+	})
+	var ps = new productService($q);
+
+	//文件名称
+	$('.am-form-file input').on('change', function() {
+	  var fileNames = '';
+	  for (var j in this.files){
+		fileNames = '<span class="am-badge">' + this.files[j].name + '</span> ';
+		var showId="#file-"+this.id+j;
+		$(showId).html(fileNames);
+		}
+
 	  
-
-		$scope.uploadFile = function(){
-			var file = $scope.myFile;
-               
-
-               
-			var uploadUrl = "/fileUpload";
-			var fd = new FormData();
-			for(var i in file){
-				 fd.append('inputFile', file[i]);
+	});
+//文件预览
+  $.uploadPreview({
+	input_field: "#doc-form-productPicture",   // Default: .image-upload
+	preview_box: "#file-doc-form-productPicture",  // Default: .image-preview
+	label_field: "#image-label",    // Default: .image-label
+	label_default: "Choose File",   // Default: Choose File
+	label_selected: "Change File",  // Default: Change File
+	no_label: false,                // Default: false
+	success_callback: angular.noop          // Default: null
+  });
+  $.uploadPreview({
+	input_field: "#doc-form-productSwiperPicture",   // Default: .image-upload
+	preview_box: "#file-doc-form-productSwiperPicture",  // Default: .image-preview
+	label_field: "#image-label",    // Default: .image-label
+	label_default: "Choose File",   // Default: Choose File
+	label_selected: "Change File",  // Default: Change File
+	no_label: false,                // Default: false
+	success_callback: angular.noop          // Default: null
+  });
+  $.uploadPreview({
+	input_field: "#doc-form-productDetailsPicture",   // Default: .image-upload
+	preview_box: "#file-doc-form-productDetailsPicture",  // Default: .image-preview
+	label_field: "#image-label",    // Default: .image-label
+	label_default: "Choose File",   // Default: Choose File
+	label_selected: "Change File",  // Default: Change File
+	no_label: false,                // Default: false
+	success_callback: angular.noop          // Default: null
+  });
+	$scope.createProduct = function(){
+		
+		var fd = new FormData();
+		var productPicture = $scope.product.productPicture;
+		var product = $scope.product;
+		var productData={}
+		for(var i in product){
+			 if(product[i].toString()==="[object FileList]"){
+				for (var j in product[i]){
+					 fd.append(i+j, product[i][j]);
+				}
+			 }else{
+				  productData[i]=(product[i]);
+			 }
+			
+			 
+		}
+		//提交文本
+		ps.createProduct(productData,$scope.users.setheaders).then(function(data){
+			console.log(data)
+			if(data.code===0){
+				$scope.product.id=data.data.id;
+				console.log($scope.product.id)
+			}else{
+				alert(JSON.stringify(data))
 			}
-              
+		},function(err){
+				alert(JSON.stringify(err))
+		});
+		
+		
+	}
+
+
+	}];
+	return ctrl;
+});
+
+/**
             
 		   $http.post(uploadUrl, fd, {
 			  transformRequest: angular.identity,
@@ -82,40 +156,4 @@ define(["amaze","framework/services/homeService"],function (amaze,homePage){
 		
 		   .error(function(){
 		   });
-            
-		}
-		// 每个菜单请求一次数据并缓存。
-		// 返回时检测当前的菜单编号，并数据切换到当前的数据，如果存在则不请求，如果不存在，则请求数据。
-		$scope.displayDataForMenu = {};
-
-		function init(){
-			// console.log($scope.currentMenu,"currentMenunum.....")
-			if(!$scope.displayDataForMenu[$scope.currentMenu]){
-
-				homePageIns.categoryData($scope.currentMenu).then(function(data){
-					
-					// console.log(data,$scope.currentMenu,"categoryData......");
-					
-					$scope.displayDataForMenu[$scope.currentMenu] = data.data;
-					$scope.productListDisplay = $scope.displayDataForMenu[$scope.currentMenu];
-					// lunbo  productListDisplay to use
-					$scope.slideFruitData =  $scope.productListDisplay.slice(0,5);
-					$scope.slideFruitDataHor = $scope.productListDisplay.slice(20,26);
-					// console.log($scope.productListDisplay.slice(5,8))
-					// menu data this place 
-				},function(err){
-					console.log(err)
-				});
-				
-			}else{
-				$scope.productListDisplay = $scope.displayDataForMenu[$scope.currentMenu];
-				$scope.slideFruitData =  $scope.productListDisplay.slice(0,5)
-				$scope.slideFruitDataHor = $scope.productListDisplay.slice(20,26);
-			}
-		}
-
-		init();
-
-	}];
-	return ctrl;
-});
+**/

@@ -99,9 +99,7 @@ define(["amaze","framework/services/productService"],function (amaze,pdt){
 
 		}
 		init();
-		// create list
-		
-		// end create
+
 
 	}];
 	return ctrl;

@@ -74,7 +74,8 @@ define(
 			$rootScope.users.account_id =  url.split("?")[1].split('&')[0].split('=')[1];
 		}
 		//setCookie("userNecessary",$rootScope.users.account_id,1);
-		//getUserDetails();
+		$rootScope.users.account_id=2;
+		getUserDetails();
 		function getUserDetails(){
 		accountIns.getUserDetails($rootScope.users.account_id).then(function(data){
 				// add header for valid
@@ -83,23 +84,7 @@ define(
 				$rootScope.users.customer = data.data.customer;
 				$rootScope.users.owner_id = data.data.customer.id;
 
-				if (getCookie("userParentId")) {
-					// send request
-					var params = {
-					    "distribution": {
-					        "owner_type": "Customer",
-					        "owner_id": $rootScope.users.owner_id,
-					        "parent_id": getCookie("userParentId"),
-					        "parent_type": "Customer"
-					    },
-					    "store_id": "1"
-					}
-					accountIns.creatDistribution({headers:$rootScope.users.setheaders},params).then(function(data){
-						console.log(data,8888)
-					},function(err){
-						console.log(err)
-					});
-				};
+
 			},function(err){
 				console.log(err);
 			});

@@ -23,13 +23,6 @@ define(["angular","framework/http"],function(angular,https){
 			method:"get"
 		});
 	}
-	homePage.prototype.login = function(data){
-	data = JSON.stringify(data)
-	return this.doRequest({
-		url:"/login",
-		method:"post",
-		data:data
-		});
-	}
+
 	return homePage;
 });

@@ -1,6 +1,5 @@
 define(["jquery"],function($){
-	var serviceIP = "http://127.0.0.1";
-	//var serviceIP = "http://www.yiyunma.com/"
+	var serviceIP = "http://116.62.6.81";
 	function ajax($q){
 		this.get = function(options){
 			var def = $q.defer();

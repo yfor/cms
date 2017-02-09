@@ -10,6 +10,7 @@ require.config({
 			"swiper":"lib/swiper/js/swiper.min.js",
 			"iscl":"lib/iscroll.js",
 			"wx":"http://res.wx.qq.com/open/js/jweixin-1.1.0.js",
+			"uploadPreview":"lib/uploadPreview.js",
 		},
 	},
 

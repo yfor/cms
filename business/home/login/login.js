@@ -1,25 +1,30 @@
 define(["amaze","framework/services/homeService"],function (amaze,homePage){
 	var ctrl = ["$scope","$state","$stateParams","$http","$q",function($scope,$state, $stateParams,$http,$q){
 	$scope.currentuser={};
-	  $scope.currentuser.name="admin"
-	   $scope.currentuser.pw="123456"
+	$scope.currentuser.name="admin"
+	$scope.currentuser.pw="123456"
+	
 	$scope.login = function(){
-		var homePageIns = new homePage($q);
-		$http.post('/login',$scope.currentuser).then(
-			function(data){
-				var sdata=data.data;
-				if(sdata.code==0){
-					setCookie("account_id",3);
-					$state.go("home");
-				}
-				else{
-					removeCookie("account_id");
-				}
-			},
-			function(err){
-				console.log(err)
+		/**
+	var homePageIns = new homePage($q);
+	$http.post('/login',$scope.currentuser).then(
+		function(data){
+			var sdata=data.data;
+			if(sdata.code==0){
+				setCookie("account_id",3);
+				$state.go("home");
 			}
-			)		
+			else{
+				removeCookie("account_id");
+			}
+		},
+		function(err){
+			console.log(err)
+		}
+		)	
+**/		
+setCookie("account_id",3);
+$state.go("home");
 	}
 	
 	function setCookie(key,value,day) {
