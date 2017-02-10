@@ -106,10 +106,12 @@ define(["amaze","framework/services/productService","uploadPreview"],function (a
   });
 	$scope.createProduct = function(){
 		
-		var fd = new FormData();
+		var f = new FormData();
+		
 		var productPicture = $scope.product.productPicture;
 		var product = $scope.product;
 		var productData={}
+		/**
 		for(var i in product){
 			 if(product[i].toString()==="[object FileList]"){
 				for (var j in product[i]){
@@ -121,7 +123,35 @@ define(["amaze","framework/services/productService","uploadPreview"],function (a
 			
 			 
 		}
+		**/
+		f.append("picture", product.productPicture[0]);
+		//"name"=>"test.png", "remark"=>"remark", "category"=>"1"
+		f.append("name", "test.png");
+		f.append("remark", "remark");
+		f.append("category", "1");
+	
+		// "owner_type"=>"Product", "owner_id"=>"2022"
+		f.append("owner_type", "Product");
+		f.append("owner_id", "2022");
+	
+		var headers=$scope.users.setheaders
+		headers["Content-Type"]=undefined;
+		
+		$http.post("http://116.62.6.81"+"/api/v1/images", f, {
+			  transformRequest: angular.identity,
+			  headers: headers
+		   })
+		
+		   .success(function(data){
+		
+			   console.log(data)
+		   })
+		
+		   .error(function(){
+		 });
 		//提交文本
+		/**
+
 		ps.createProduct(productData,$scope.users.setheaders).then(function(data){
 			console.log(data)
 			if(data.code===0){
@@ -134,7 +164,7 @@ define(["amaze","framework/services/productService","uploadPreview"],function (a
 				alert(JSON.stringify(err))
 		});
 		
-		
+		**/
 	}
 
 
@@ -144,16 +174,5 @@ define(["amaze","framework/services/productService","uploadPreview"],function (a
 
 /**
             
-		   $http.post(uploadUrl, fd, {
-			  transformRequest: angular.identity,
-			  headers: {'Content-Type': undefined}
-		   })
-		
-		   .success(function(data){
-			   $scope.image=data;
-			   console.log($scope.image.file)
-		   })
-		
-		   .error(function(){
-		   });
+
 **/
