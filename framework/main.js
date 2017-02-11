@@ -7,16 +7,14 @@ require.config({
 			"angular":"lib/angular.min",
 			"ui-router":"lib/angular-ui-router",
 			"amaze":"lib/amaze/js/amazeui.min.js",
-			"swiper":"lib/swiper/js/swiper.min.js",
 			"iscl":"lib/iscroll.js",
-			"wx":"http://res.wx.qq.com/open/js/jweixin-1.1.0.js",
 			"uploadPreview":"lib/uploadPreview.js",
 		},
 	},
 
 	paths :{
-		amaze:"lib/amaze/js",
-		swiper:"lib/swiper/js"
+		amaze:"lib/amaze/js"
+		
 	},
 
 	shim:{
@@ -34,10 +32,7 @@ require.config({
 		},
 		"lib/angular-ui-router":{
 			"deps":["lib/angular.min"]
-		},
-		// "lib/iscroll":{
-		// 	"exports":"IScroll"
-		// }
+		}
 
 	},
 	priority:["angular"],
