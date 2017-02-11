@@ -106,9 +106,28 @@ define(["amaze","framework/services/productService","uploadPreview"],function (a
 			 
 		}
 		**/
+
+		//提交文本
 		/**
+
+		ps.createProduct(productData,$scope.users.setheaders).then(function(data){
+			console.log(data)
+			if(data.code===0){
+				$scope.product.id=data.data.id;
+				console.log($scope.product.id)
+			}else{
+				alert(JSON.stringify(data))
+			}
+		},function(err){
+				alert(JSON.stringify(err))
+		});
+		
+		**/
+		//多图
 		var f = new FormData();
-		f.append("picture", product.productPicture[0]);
+		for(var i =0;i< product.productSwiperPicture.length;i++){
+				f.append("document_data[]", product.productSwiperPicture[i]);
+		}
 		//"name"=>"test.png", "remark"=>"remark", "category"=>"1"
 		f.append("name", "test.png");
 		f.append("remark", "remark");
@@ -133,59 +152,9 @@ define(["amaze","framework/services/productService","uploadPreview"],function (a
 		
 		   .error(function(){
 		 });
-		 **/
-		//提交文本
-		/**
-
-		ps.createProduct(productData,$scope.users.setheaders).then(function(data){
-			console.log(data)
-			if(data.code===0){
-				$scope.product.id=data.data.id;
-				console.log($scope.product.id)
-			}else{
-				alert(JSON.stringify(data))
-			}
-		},function(err){
-				alert(JSON.stringify(err))
-		});
-		
-		**/
-		//多图
-		var f = new FormData();
-		f.append("document_data[]", product.productSwiperPicture[0]);
-		f.append("document_data[]", product.productSwiperPicture[1]);
-		//"name"=>"test.png", "remark"=>"remark", "category"=>"1"
-		f.append("name", "test.png");
-		f.append("remark", "remark");
-		f.append("category", "1");
-	
-		// "owner_type"=>"Product", "owner_id"=>"2022"
-		f.append("owner_type", "Product");
-		f.append("owner_id", "2022");
-	
-		var headers=$scope.users.setheaders
-		headers["Content-Type"]=undefined;
-		
-		$http.post("http://116.62.6.81"+"/api/v1/upload_multiple_files", f, {
-			  transformRequest: angular.identity,
-			  headers: headers
-		   })
-		
-		   .success(function(data){
-		
-			   console.log(data)
-		   })
-		
-		   .error(function(){
-		 });
 	}
 
 
 	}];
 	return ctrl;
 });
-
-/**
-            
-
-**/
