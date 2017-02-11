@@ -88,7 +88,7 @@ define(["amaze","framework/services/productService","uploadPreview"],function (a
 	  });
 	$scope.createProduct = function(){
 		
-		var f = new FormData();
+		
 		
 		var productPicture = $scope.product.productPicture;
 		var product = $scope.product;
@@ -106,6 +106,8 @@ define(["amaze","framework/services/productService","uploadPreview"],function (a
 			 
 		}
 		**/
+		/**
+		var f = new FormData();
 		f.append("picture", product.productPicture[0]);
 		//"name"=>"test.png", "remark"=>"remark", "category"=>"1"
 		f.append("name", "test.png");
@@ -131,6 +133,7 @@ define(["amaze","framework/services/productService","uploadPreview"],function (a
 		
 		   .error(function(){
 		 });
+		 **/
 		//提交文本
 		/**
 
@@ -147,6 +150,34 @@ define(["amaze","framework/services/productService","uploadPreview"],function (a
 		});
 		
 		**/
+		//多图
+		var f = new FormData();
+		f.append("document_data[]", product.productSwiperPicture[0]);
+		f.append("document_data[]", product.productSwiperPicture[1]);
+		//"name"=>"test.png", "remark"=>"remark", "category"=>"1"
+		f.append("name", "test.png");
+		f.append("remark", "remark");
+		f.append("category", "1");
+	
+		// "owner_type"=>"Product", "owner_id"=>"2022"
+		f.append("owner_type", "Product");
+		f.append("owner_id", "2022");
+	
+		var headers=$scope.users.setheaders
+		headers["Content-Type"]=undefined;
+		
+		$http.post("http://116.62.6.81"+"/api/v1/upload_multiple_files", f, {
+			  transformRequest: angular.identity,
+			  headers: headers
+		   })
+		
+		   .success(function(data){
+		
+			   console.log(data)
+		   })
+		
+		   .error(function(){
+		 });
 	}
 
 
